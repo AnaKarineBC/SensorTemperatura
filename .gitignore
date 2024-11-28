@@ -1,0 +1,7 @@
+.idea/
+*.iml
+.vscode/
+# Para projetos Node.js
+node_modules/
+# Para o Firebase
+serviceAccountKey.json
