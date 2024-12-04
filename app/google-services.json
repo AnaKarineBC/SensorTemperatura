@@ -1,36 +1,121 @@
 {
   "project_info": {
-    "project_number": "259675372387",
-    "project_id": "projetofinal-cd372",
-    "storage_bucket": "projetofinal-cd372.firebasestorage.app"
+    "project_number": "961810668212",
+    "project_id": "finalproject-c4d5d",
+    "storage_bucket": "finalproject-c4d5d.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:259675372387:android:4a75a4f7131b8dbd21b156",
+        "mobilesdk_app_id": "1:961810668212:android:a8d8c052f247e2791795e1",
         "android_client_info": {
-          "package_name": "com.example.mpfinal"
+          "package_name": "com.app.clima"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "259675372387-c9kk9ilnrtrcmngiec7bkt7ui2hnups1.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBxp3jkRv0_KUt7ET9y9NqMbVr6-zGG8yk"
+          "current_key": "AIzaSyABSWiJkXF9zhzlmvwu9I3SpPy9toxlp5U"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "259675372387-c9kk9ilnrtrcmngiec7bkt7ui2hnups1.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961810668212:android:676693ef8dab2e151795e1",
+        "android_client_info": {
+          "package_name": "com.example.mpfinal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABSWiJkXF9zhzlmvwu9I3SpPy9toxlp5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961810668212:android:91db1343a0a7435f1795e1",
+        "android_client_info": {
+          "package_name": "com.example.pfm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABSWiJkXF9zhzlmvwu9I3SpPy9toxlp5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961810668212:android:a3ffc2a4f46227401795e1",
+        "android_client_info": {
+          "package_name": "com.example.sensortemperaturaumidade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABSWiJkXF9zhzlmvwu9I3SpPy9toxlp5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961810668212:android:2c986486572de7561795e1",
+        "android_client_info": {
+          "package_name": "com.example.temperatura_umidade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABSWiJkXF9zhzlmvwu9I3SpPy9toxlp5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961810668212:android:fe8192953d2f28931795e1",
+        "android_client_info": {
+          "package_name": "com.example.temperaturaumidadeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABSWiJkXF9zhzlmvwu9I3SpPy9toxlp5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }
