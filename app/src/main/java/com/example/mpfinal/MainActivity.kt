@@ -3,6 +3,7 @@ package com.example.mpfinal
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 
 // Classe de dados
-data class SensorData(val dateTime: String = "", val humidity: Int = 0, val temperature: Int = 0)
+data class SensorData(val date: String = "", val hmd: String = "", val temp: String = "", val time: String = "")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SensorDataApp() {
     var date by remember { mutableStateOf("") }
@@ -50,7 +52,7 @@ fun SensorDataApp() {
     fun fetchAllData() {
         val db = FirebaseFirestore.getInstance()
 
-        db.collection("sensor")
+        db.collection("SensorData")
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
@@ -71,57 +73,106 @@ fun SensorDataApp() {
         filteredData = if (date.isEmpty()) {
             allSensorData
         } else {
-            allSensorData.filter { it.dateTime.contains(date) }
+            allSensorData.filter { it.date.contains(date) }
         }
     }
 
     // Carregar os dados ao iniciar
     fetchAllData()
 
-    // Filtrar sempre que a data mudar
-    filterData()
+    // Layout principal sem Scaffold
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White) // Fundo branco
+            .padding(8.dp), // Padding reduzido para telas menores
+        verticalArrangement = Arrangement.spacedBy(12.dp) // Menor espaçamento entre os itens
+    ) {
+        // Top bar customizada
+        Text(
+            text = "Sensor Data Viewer",
+            color = Color.White,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.DarkGray)
+                .padding(16.dp)
+        )
 
-    Column {
         // Campo de entrada de data para filtragem
-        TextField(
+        OutlinedTextField(
             value = date,
             onValueChange = { date = it },
-            label = { Text("Filtrar por Data (DD/MM/YYYY)") },
+            label = { Text("Filtrar por Data (YYYY-MM-DD)", color = Color.Black) },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
                 onDone = { filterData() }
             ),
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp), // Ajustando o espaçamento
+            singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Black,
+                unfocusedBorderColor = Color.Gray,
+                focusedTextColor = Color.Black
+            )
         )
+
+        // Botão para aplicar filtro
+        Button(
+            onClick = { filterData() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+        ) {
+            Text("Buscar Dados", color = Color.White)
+        }
 
         // Exibe mensagem de erro, se houver
         if (error.isNotEmpty()) {
-            Text(text = error, color = Color.Red)
+            Text(
+                text = error,
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(8.dp)
+            )
         }
 
         // Exibe os dados em uma tabela
         if (filteredData.isNotEmpty()) {
-            Text("Todos os Dados:", modifier = Modifier.padding(top = 16.dp))
+            Text(
+                text = "Resultados Encontrados:",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp), color = Color.Black
+            )
 
+            // LazyColumn com scroll
             LazyColumn(
-                contentPadding = PaddingValues(top = 16.dp),
-                modifier = Modifier.padding(top = 16.dp)
+                contentPadding = PaddingValues(vertical = 8.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 8.dp)
+                    .weight(1f) // Preenchendo o espaço restante
             ) {
                 // Cabeçalho da tabela
                 item {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .background(Color.Black.copy(alpha = 0.1f))
                             .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.spacedBy(12.dp) // Ajustando o espaçamento
                     ) {
-                        Text("Data/Hora", modifier = Modifier.weight(1f))
-                        Text("Umidade", modifier = Modifier.weight(1f))
-                        Text("Temperatura", modifier = Modifier.weight(1f))
+                        Text("Data", modifier = Modifier.weight(1f), color = Color.Black)
+                        Text("Umid.", modifier = Modifier.weight(1f), color = Color.Black)
+                        Text("Temp.", modifier = Modifier.weight(1f), color = Color.Black)
+                        Text("Hora", modifier = Modifier.weight(1f), color = Color.Black)
                     }
-                    Divider()
                 }
 
                 // Exibe os itens da tabela
@@ -129,16 +180,25 @@ fun SensorDataApp() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .padding(vertical = 8.dp)
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp) // Ajustando o espaçamento
                     ) {
-                        Text(data.dateTime, modifier = Modifier.weight(1f))
-                        Text("${data.humidity}%", modifier = Modifier.weight(1f))
-                        Text("${data.temperature}°C", modifier = Modifier.weight(1f))
+                        Text(data.date, modifier = Modifier.weight(1f), color = Color.Black)
+                        Text("${data.hmd}%", modifier = Modifier.weight(1f), color = Color.Black)
+                        Text("${data.temp}°C", modifier = Modifier.weight(1f), color = Color.Black)
+                        Text(data.time, modifier = Modifier.weight(1f), color = Color.Black)
                     }
-                    Divider()
+                    Divider(color = Color.Black.copy(alpha = 0.2f))
                 }
             }
+        } else if (error.isEmpty() && filteredData.isEmpty() && allSensorData.isNotEmpty()) {
+            Text(
+                text = "Nenhum dado correspondente ao filtro foi encontrado.",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(8.dp),
+                color = Color.Black
+            )
         }
     }
 }
