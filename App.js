@@ -6,9 +6,10 @@ const path = require('path');
 // Inicializar Firebase Admin SDK
 const serviceAccount = require('./serviceAccountKey.json');
 
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://console.firebase.google.com/project/projetofinal-cd372/firestore/databases/-default-/data?hl=pt-br"
+    databaseURL: "https://console.firebase.google.com/u/1/project/finalproject-c4d5d/firestore/databases/-default-/data/~2FSensorData~2F127688?hl=pt-br"
 });
 
 const db = admin.firestore();
@@ -23,10 +24,10 @@ app.set('views', './views');
 
 const port = 8000;
 
-// Rota GET para exibir o formulário e os dados
+// Rota GET para exibir todos os dados
 app.get('/', async (req, res) => {
     try {
-        const snapshot = await db.collection('sensor').get();
+        const snapshot = await db.collection('SensorData').get();
         const allData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.render('index', { data: allData, searchResults: null, error: null });
     } catch (error) {
@@ -35,21 +36,21 @@ app.get('/', async (req, res) => {
     }
 });
 
-// Rota POST para buscar dados por um campo específico
+// Rota POST para buscar dados por data
 app.post('/search', async (req, res) => {
-    const { date } = req.body; // Supõe que a data inserida pelo usuário já está no formato dd/mm/yyyy
+    const { date } = req.body; // Data inserida pelo usuário no formato YYYY-MM-DD
 
-    if (!date || !/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) { // Validação para YYYY-MM-DD
         return res.render('index', {
             data: [],
             searchResults: [],
-            error: "Por favor, insira uma data válida no formato DD/MM/YYYY."
+            error: "Por favor, insira uma data válida no formato YYYY-MM-DD."
         });
     }
 
     try {
-        // Buscar dados no Firestore onde o campo 'data' corresponde à data fornecida
-        const snapshot = await db.collection('sensor').where('dateTime', '==', date).get();
+        // Buscar dados no Firestore onde o campo 'date' corresponde à data fornecida
+        const snapshot = await db.collection('SensorData').where('date', '==', date).get();
 
         if (snapshot.empty) {
             return res.render('index', {
@@ -72,8 +73,6 @@ app.post('/search', async (req, res) => {
         res.render('index', { data: [], searchResults: null, error: "Erro ao buscar dados." });
     }
 });
-
-
 
 // Inicializar o servidor
 app.listen(port, () => {

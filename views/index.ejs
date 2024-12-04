@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Data</title>
+    <title>Dados do Firestore</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -11,11 +11,12 @@
         <h1>Dados do Firestore</h1>
 
         <!-- Formulário de busca -->
-        <form action="/search" method="POST">
-            <label for="date">Buscar por Data (DD-MM-YYYY):</label>
-            <input type="text" id="date" name="date" placeholder="Digite a data" required>
+        <form action="/search" method="POST" class="search-form">
+            <label for="date">Buscar por Data (YYYY-MM-DD):</label>
+            <input type="text" id="date" name="date" placeholder="Digite a data (YYYY-MM-DD)" required>
             <button type="submit">Buscar</button>
         </form>
+
 
         <!-- Exibir mensagens de erro -->
         <% if (error) { %>
@@ -23,28 +24,32 @@
         <% } %>
 
         <!-- Resultados da busca -->
-        <% if (searchResults) { %>
+        <% if (searchResults && searchResults.length > 0) { %>
             <h2>Resultados da Busca</h2>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Data</th>
-                        <th>Umidade</th>
-                        <th>Temperatura</th>
+                        <th>Hora</th>
+                        <th>Umidade (%)</th>
+                        <th>Temperatura (°C)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% searchResults.forEach(item => { %>
                         <tr>
                             <td><%= item.id %></td>
-                            <td><%= item.dateTime %></td>
-                            <td><%= item.humidity %></td>
-                            <td><%= item.temperature %></td>
+                            <td><%= item.date %></td>
+                            <td><%= item.time %></td>
+                            <td><%= item.hmd %></td>
+                            <td><%= item.temp %></td>
                         </tr>
                     <% }) %>
                 </tbody>
             </table>
+        <% } else if (searchResults) { %>
+            <p class="no-results">Nenhum dado encontrado para a data informada.</p>
         <% } %>
 
         <!-- Todos os dados -->
@@ -54,17 +59,19 @@
                 <tr>
                     <th>ID</th>
                     <th>Data</th>
-                    <th>Umidade</th>
-                    <th>Temperatura</th>
+                    <th>Hora</th>
+                    <th>Umidade (%)</th>
+                    <th>Temperatura (°C)</th>
                 </tr>
             </thead>
             <tbody>
                 <% data.forEach(item => { %>
                     <tr>
                         <td><%= item.id %></td>
-                        <td><%= item.dateTime %></td>
-                        <td><%= item.humidity %></td>
-                        <td><%= item.temperature %></td>
+                        <td><%= item.date %></td>
+                        <td><%= item.time %></td>
+                        <td><%= item.hmd %></td>
+                        <td><%= item.temp %></td>
                     </tr>
                 <% }) %>
             </tbody>
